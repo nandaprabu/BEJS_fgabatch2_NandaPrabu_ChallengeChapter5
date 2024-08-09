@@ -1,0 +1,84 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Customer {
+  id                  String            @id @default(uuid())
+  name                String
+  phone               String      
+  email               String            @unique
+  password            String
+  profiles            Profiles?
+  Account             Account[]         
+}
+
+model Profiles {
+  id                  String            @id @default(uuid())
+  cust                Customer          @relation(fields: [customer_id], references: [id], onDelete: Cascade )
+  customer_id         String            @unique
+  identity_type       String
+  identity_number     String            @unique
+  address             String
+}
+
+model Account_type {
+  id                  Int               @id @default(autoincrement())
+  name                String 
+  description         String?
+  Account             Account[]
+}
+
+model Account {
+  id                   String             @id @default(uuid())
+  cust                 Customer?          @relation(fields: [customer_id], references: [id], onDelete: Cascade)
+  customer_id          String
+  act                  Account_type       @relation(fields: [account_type], references: [id], onDelete: Cascade)
+  account_type         Int
+  bank_name            String
+  balance              Float
+  transaction_from     Transaction[]      @relation("relation_from")
+  transaction_to       Transaction[]      @relation("relation_to")
+}
+
+enum type_trk{
+  Deposit
+  Withdraw
+  Transfer
+}
+
+enum status_trk{
+  Success
+  Pending
+  Failed
+}
+
+model Transaction {
+  id                    String            @id @default(cuid())
+  account_id            String
+  account_destination   String?
+  transaction_time      DateTime          @default(now())
+  transaction_type      type_trk          @default(Deposit)
+  amount                Float
+  transaction_status    status_trk        @default(Success)
+
+  acc_id                Account           @relation("relation_from", fields: [account_id], references: [id], onDelete: Cascade)
+  acc_des               Account?          @relation("relation_to", fields: [account_destination], references: [id], onDelete: Cascade)
+}
+
+model Admin {
+  id            String        @id @default(uuid())
+  nama          String
+  email         String        @unique
+  password      String
+}

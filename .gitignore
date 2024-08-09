@@ -1,0 +1,17 @@
+# Ignore node_modules
+node_modules
+
+# Ignore Prisma Migrations
+prisma/migrations 
+
+# Ignore package-lock
+package-lock.json
+
+# Ignore .env
+.env
+
+# Ignore Coverage
+coverage
+
+# Ignore .vscode
+.vscode

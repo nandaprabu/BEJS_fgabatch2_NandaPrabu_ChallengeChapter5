@@ -1,0 +1,633 @@
+openapi: 3.0.3
+info:
+  title: Banking - API
+  description: Selamat datang di dokumentasi API aplikasi Bank Binar, solusi perbankan digital yang dirancang untuk integrasi yang mudah dan cepat. Dokumentasi ini merupakan panduan bagi anda yang hendak berkomunikasi dengan sistem kami.
+  version: 1.0.1
+servers:
+  - url: https://localhost:3000/V1/
+tags:
+  - name: customer
+    description: Get your customer data
+  - name: account
+    description: Access to account data
+  - name: type account
+    description: Access the types of accounts available at Binar Bank 
+  - name: transaction
+    description: Access to all transaction data
+  - name: authentication
+    description: Handling the authentication and authorization
+paths:
+  # Endpoint Customer
+  /user/createCustomer:
+    post:
+      tags:
+        - customer
+      summary: adding new users to binar bank
+      description: This endpoint is used to register users into the Binar Bank database
+      requestBody:
+        description: Created user object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '200':
+          description: Customer created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateCustomerResponse'
+        '500':
+          description: Failed when created customer data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorAdd'
+  /user: 
+    get:
+      tags:
+        - customer
+      summary: get all customer data
+      description: This endpoint is used to display user data from the Binar Bank database
+      responses:
+        '200':
+          description: Customer data displayed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserResponse' 
+        '500':
+          description: Customer data displayed Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDisplay'
+  /user/{id}: 
+    get:
+      tags:
+        - customer
+      summary: get customer data by id
+      description: This endpoint is used to display user data from the Binar Bank database
+      responses:
+        '200':
+          description: Detail customer data displayed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserResponse' 
+        '404':
+          description: Detail customer data not foung
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatanotFound'
+        '500':
+          description: Detail customer data displayed Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDisplay'
+
+  # Endpoint : Account
+  /account/createAccount:
+    post:
+      tags:
+        - account
+      summary: adding new account to binar bank
+      description: This endpoint is used to register the account into the Binar Bank database
+      requestBody:
+        description: Created account object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+      responses:
+        '200':
+          description: Account created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateAccountResponse'
+        '500':
+          description: Failed when created Account data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorAdd'
+  /account: 
+    get:
+      tags:
+        - account
+      summary: get all account data
+      description: This endpoint is used to display the account data from the Binar Bank database
+      responses:
+        '200':
+          description: Account data displayed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAccountResponse' 
+        '500':
+          description: Customer data displayed Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDisplay'
+  /account/{id}: 
+    get:
+      tags:
+        - account
+      summary: get account data by id
+      description: This endpoint is used to display account data from the Binar Bank database
+      responses:
+        '200':
+          description: Detail account data displayed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAccountResponse' 
+        '404':
+          description: Detail customer data not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatanotFound'
+        '500':
+          description: Detail customer data displayed Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDisplay'
+
+  # Endpoint : Account Type
+  /typeaccount/create:
+    post:
+      tags:
+        - type account
+      summary: adding new account to binar bank
+      description: This endpoint is used to register the account into the Binar Bank database
+      requestBody:
+        description: Created account object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountType'
+      responses:
+        '200':
+          description: Account Type created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateAccountTypes'
+        '500':
+          description: Failed when created Account data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorAdd'
+
+  /typeaccount/type: 
+    get:
+      tags:
+        - type account
+      summary: get all account data
+      description: This endpoint is used to display the account data from the Binar Bank database
+      responses:
+        '200':
+          description: Account Type data displayed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAccountResponse'
+         
+        '500':
+          description: Account Type displayed Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDisplay'
+
+  /transaction/createTransaction:
+    post:
+      tags:
+        - transaction
+      summary: adding new transactionn to binar bank
+      description: This endpoint is used to record transaction data into the Binar Bank database
+      requestBody:
+        description: Created transaction object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transaction'
+      responses:
+        '200':
+          description: Transaction data record successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrasactionResponse'
+        '500':
+          description: Failed when record transaction data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorAdd'
+    
+  /transaction:
+    get:
+      tags:
+        - transaction
+      summary: adding new transactionn to binar bank
+      description: This endpoint is used to record transaction data into the Binar Bank database
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: Created transaction object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transaction'
+      responses:
+        '200':
+          description: Transaction data record successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrasactionResponse'
+        '500':
+          description: Failed when record transaction data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorAdd'
+
+  /transaction/{id}: 
+    get:
+      tags:
+        - transaction
+      summary: get account data by id
+      description: This endpoint is used to display account data from the Binar Bank database
+      responses:
+        '200':
+          description: Detail transaction data displayed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrasactionResponse' 
+        '404':
+          description: Detail transaction data not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatanotFound'
+        '500':
+          description: Detail transaction data displayed Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDisplay'
+
+  /auth/register:
+    post:
+      tags:
+        - authentication
+      summary: adding new admin to handling binar bank data
+      description: This endpoint is used to create admin into the Binar Bank database
+      requestBody:
+        description: Created admin object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Admin'
+      responses:
+        '200':
+          description: Admin data record successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminResponse'
+        '500':
+          description: Failed when record admin data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorAdd'
+
+  /auth/login:
+    post:
+      tags:
+        - authentication
+      summary: Login into admin data
+      requestBody:
+        description: Created admin object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminLogin'
+      responses:
+        '200':
+          description: Login into data admin successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        '500':
+          description: Failed when login into admin data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorAdd'
+
+  /auth/authenticate:
+     get:
+      tags:
+        - authentication
+      summary: authentication admin data
+      description: This endpoint is used to authentication data admin in the Binar Bank database
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Transaction data record successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticateResponse'
+        '500':
+          description: Failed when record transaction data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorAdd'
+
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    CreateCustomerResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: Success
+        message:
+          type: string
+          example: Create Customer Success! Data Added Successfully
+        result:
+          type: object
+          properties:
+            user:
+              $ref: '#/components/schemas/Customer'
+            profiles:
+              $ref: '#/components/schemas/Profile'
+
+    Customer:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: e4097ad3-6be7-497c-a853-bea5a6b28712
+        name:
+          type: string
+          example: Maria Currie
+        phone:
+          type: string
+          example: 222-4451
+        email:
+          type: string
+          format: email
+          example: contoh@gmail.com
+        password:
+          type: string
+          example: $2b$10$INxKokgIg9LpIf2Jty8CCeqrivevg6JRRKjvGP5PMaTXmMWteG7U.
+
+    Profile:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 11b1e02e-39f7-4e69-ab2e-abfec58da58e
+        customer_id:
+          type: string
+          format: uuid
+          example: e4097ad3-6be7-497c-a853-bea5a6b28712
+        identity_type:
+          type: string
+          example: KTP
+        identity_number:
+          type: string
+          example: 123456
+        address:
+          type: string
+          example: 112 Stanford Road, London, IL 12344
+  
+    ErrorAdd: 
+      type: object
+      properties:
+        status:
+          type: string
+          example: fail
+        error:
+          type: string
+          example: An error occurred while adding data
+        details:
+          type: string
+          example: Invalid `ORMname.tableName.actionName()`
+
+    ErrorDisplay:
+      type: object
+      properties:
+        status:
+          type: string
+          example: fail
+        error:
+          type: string
+          example: An error occurred while displayed data
+        details:
+          type: string
+          example: Invalid `ORMname.tableName.actionName()`
+
+    DatanotFound:
+      type: object
+      properties:
+        status:
+          type: string
+          example: fail
+        error:
+          type: string
+          example: data not found
+
+    GetUserResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: Success
+        message:
+          type: string
+          example: Detail User Found! Data displayed successfully
+        user:
+          $ref: '#/components/schemas/Customer'
+    
+    CreateAccountResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: Success
+        message:
+          type: string
+          example: Create Account Success! Data Added Successfully
+        result:
+          type: object
+          properties:
+            user:
+              $ref: '#/components/schemas/Account'
+    Account:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: ca5638b4-1e69-4378-a646-6e118323c6c9
+        customer_id:
+          type: string
+          format: uuid
+          example: c251993c-3a96-436a-a3c3-85e6b7267c67
+        account_type:
+          type: integer
+          example: 1
+        bank_name:
+          type: string
+          example: Bank Binar Academy
+        balance:
+          type: number
+          format: float
+          example: 1000000
+    
+    GetAccountResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: Success
+        message:
+          type: string
+          example: Detail Account Found! Data displayed successfully
+        user:
+          $ref: '#/components/schemas/Account'
+    
+    CreateAccountTypes:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: All Account Type found! Data displayed successfully
+        typeAccounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountType'
+            
+    AccountType:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Tabungan Hari Tua
+        description:
+          type: string
+          example: Tabungan untuk hari tua yang lebih makmur dan sejahtera
+    
+    Transaction:
+      type: "object"
+      properties:
+        account_id:
+          type: "string"
+          example: "8b24085f-ff09-4c01-b106-9bfd6bd8fa76"
+        account_destination:
+          type: "string"
+          example: "ca5638b4-1e69-4378-a646-6e118323c6c9"
+        transaction_type:
+          type: "string"
+          enum: ["Transfer", "Withdraw", "Deposit"]
+          example: "Transfer"
+        amount:
+          type: "number"
+          example: 50000
+
+    TrasactionResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: Success
+        message:
+          type: string
+          example: Data transaction Found! Data displayed successfully
+        user:
+          $ref: '#/components/schemas/Transaction'
+
+    Admin:
+      type: object
+      properties:
+        nama:
+          type: string
+          example: "admin2"
+        email:
+          type: string
+          format: email
+          example: "admin2@gmail.com"
+        password:
+          type: string
+          example: "password123"
+
+    AdminResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: Success
+        message:
+          type: string
+          example: Data transaction Found! Data displayed successfully
+        result:
+          $ref: '#/components/schemas/Admin'
+
+    AdminLogin:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          example: "admin2@gmail.com"
+        password:
+          type: string
+          example: "password123"
+
+
+    TokenResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MDc4N2I5LTEyMGEtNDI0MC1iZjFjLTVhMDY0MTJjYTJmMyIsImVtYWlsIjoiYWRtaW4xQGdtYWlsLmNvbSIsIm5hbWEiOiJhZG1pbjEiLCJpYXQiOjE3MjMyMTI2MzAsImV4cCI6MTcyMzIxNjIzMH0.DXE-s5xLGRa2hKt90Ez_2SI7oGNa0cUMdTYrstCq89Q"
+
+    AuthenticateResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Authenticated successfully, you have access to transaction data!"
